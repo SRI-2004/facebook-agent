@@ -1,0 +1,17 @@
+**Generate Cypher:**
+1. **Analyze Request & Intent:** The user wants to understand the performance of their campaigns. This typically involves metrics like spend, clicks, impressions, CTR, and CPC.
+2. **Identify Elements (Facebook Schema):** The relevant nodes are `:FbAdAccount`, `:FbCampaign`, and `:FbMonthlyCampaignInsight`. The relationships are `[:HAS_CAMPAIGN]` and `[:HAS_MONTHLY_INSIGHT]`. The performance metrics are available in `FbMonthlyCampaignInsight`.
+3. **Construct Query & Calculation Rationale:**
+   - Start from `:FbAdAccount` and traverse to `:FbCampaign` and its `:FbMonthlyCampaignInsight`.
+   - Filter for campaigns with `camp.status = 'ACTIVE'` and `camp.effective_status = 'ACTIVE'` to ensure only active and serving campaigns are considered.
+   - Aggregate `spend`, `clicks`, and `impressions` using `SUM()` from `FbMonthlyCampaignInsight` for each campaign.
+   - Filter out campaigns with `totalCampaignSpend <= 0` after aggregation to exclude non-performing campaigns.
+   - **Calculated Metrics:**
+     - Calculate `campaignCTR` as `toFloat(totalCampaignClicks) / totalCampaignImpressions` and `campaignCPC` as `toFloat(totalCampaignSpend) / totalCampaignClicks`, using `CASE` statements to handle division by zero.
+   - Return campaign ID, name, and all relevant aggregated/calculated metrics for context.
+   - Limit the results to 10 campaigns to provide a manageable overview.
+
+---
+
+**Generate Insight:**
+The analysis focused on key performance metrics such as total spend, clicks, impressions, CTR, and CPC for each campaign. By comparing these metrics, I identified the relative performance and efficiency of each campaign. The data was structured in a clear format, and the analysis highlighted areas of strength and potential improvement. The query generation reasoning ensured that only active campaigns were considered, and calculated metrics like CTR and CPC provided insights into engagement and cost efficiency.

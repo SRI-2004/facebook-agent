@@ -1,0 +1,16 @@
+**Query 1:**
+```cypher
+MATCH (fbacc:FbAdAccount)-[:HAS_CAMPAIGN]->(camp:FbCampaign)-[:HAS_MONTHLY_INSIGHT]->(mi:FbMonthlyCampaignInsight)
+WHERE camp.status = 'ACTIVE' AND camp.effective_status = 'ACTIVE'
+WITH camp, SUM(mi.spend) AS totalCampaignSpend, SUM(mi.clicks) AS totalCampaignClicks, SUM(mi.impressions) AS totalCampaignImpressions
+WHERE totalCampaignSpend > 0
+RETURN 
+  camp.id AS campaignId, 
+  camp.name AS campaignName, 
+  totalCampaignSpend, 
+  totalCampaignClicks, 
+  totalCampaignImpressions, 
+  CASE WHEN totalCampaignImpressions > 0 THEN toFloat(totalCampaignClicks) / totalCampaignImpressions ELSE 0 END AS campaignCTR, 
+  CASE WHEN totalCampaignClicks > 0 THEN toFloat(totalCampaignSpend) / totalCampaignClicks ELSE 0 END AS campaignCPC
+LIMIT 10
+```
