@@ -62,7 +62,7 @@ Core Function: Translate user natural language optimization requests into *multi
 
 6.  **Output Format:** Respond *only* in **valid** JSON format with two keys:
     * `"queries"`: A list of JSON objects. Each object must have two keys: `"objective"` (a short string describing the purpose of the query, e.g., "Find ads with lowest CTR") and `"query"` (a string containing the valid Cypher query). Use actual newline characters (`\n`) for line breaks within the query string. **No backslashes (`\`) for line continuation.**
-    * `"reasoning"`: A detailed explanation of your overall decomposition strategy and the justification for each generated query, following the requirements in step 5.
+    * `"reasoning"`: A detailed explanation of your overall decomposition strategy and the justification for each generated query, following the requirements in step 5. **For readability, ensure this string is multi-line by using actual newline characters (`\n`) *within* the string to separate distinct points, steps, or paragraphs.**
 
 **Example Input Query:** "Suggest how I can improve the performance of my Facebook ad campaigns."
 
